@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my garden — The Home Screen Plant Tracker</title>
+    <style>
+        :root {
+            --bg-color: #FDFBF4;
+            --text-dark: #2C3E2B;
+            --text-muted: #7A8B79;
+            --accent-terracotta: #C97A5E;
+            --accent-light: #F4EFE3;
+            --card-bg: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .features-badge {
+            background: var(--accent-light);
+            color: var(--text-dark);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
+        .badge-wrapper {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        /* Screenshot Gallery */
+        .gallery-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 32px 0 16px 0;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        .screenshot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .screenshot-item {
+            background: var(--accent-light);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .screenshot-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .screenshot-caption {
+            padding: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text-dark);
+            background: #fff;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* Forms & Inputs */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        input[type="text"], input[type="email"], textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #E4E0D5;
+            border-radius: 12px;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--accent-terracotta);
+        }
+
+        .file-upload-wrapper {
+            border: 2px dashed #E4E0D5;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            background: var(--bg-color);
+            cursor: pointer;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            display: block;
+            width: 100%;
+            background-color: var(--accent-terracotta);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        /* Invoice styles */
+        .invoice-box {
+            background: var(--accent-light);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .invoice-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .invoice-total {
+            border-top: 1px solid #E4E0D5;
+            padding-top: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .payment-option {
+            border: 1px solid #E4E0D5;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            background: #FFF;
+        }
+
+        .qr-placeholder {
+            width: 160px;
+            height: 160px;
+            background: #E4E0D5;
+            margin: 16px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-weight: bold;
+            color: var(--text-muted);
+        }
+
+        .alert-box {
+            background: #FFF9E6;
+            border-left: 4px solid #F5B041;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="public-marketing-view" class="container">
+        <header>
+            <h1>my garden</h1>
+            <p class="subtitle">The lightweight plant tracker that lives on your home screen.</p>
+            <span class="features-badge">✨ Zero Ads • No App Store Friction • Light Experience</span>
+        </header>
+
+        <p class="gallery-title">Take a look inside your future garden</p>
+        <div class="screenshot-grid">
+            <div class="screenshot-item">
+                <img src="IMG_8754.PNG" alt="Daily Care Check-in View">
+                <div class="screenshot-caption">Daily Care Check-in</div>
+            </div>
+            <div class="screenshot-item">
+                <img src="IMG_8755.PNG" alt="All Plants Grid View">
+                <div class="screenshot-caption">Your Complete Plant Grid</div>
+            </div>
+            <div class="screenshot-item">
+                <img src="IMG_8756.PNG" alt="Pet Safe & Rarity Filters">
+                <div class="screenshot-caption">Pet-Safe & Rarity Filters</div>
+            </div>
+            <div class="screenshot-item">
+                <img src="IMG_8757.PNG" alt="Room and Cluster Sorting">
+                <div class="screenshot-caption">Room & Cluster Sorting</div>
+            </div>
+            <div class="screenshot-item">
+                <img src="IMG_8758.PNG" alt="Quick Add Modal">
+                <div class="screenshot-caption">Quick Add Form</div>
+            </div>
+            <div class="screenshot-item">
+                <img src="IMG_8760.PNG" alt="Detailed Care Breakdown">
+                <div class="screenshot-caption">Detailed Plant Logs</div>
+            </div>
+        </div>
+
+      <div id="form-upload-view" class="container">
+        </header>
+            <h3 style="margin-bottom: 4px; text-align: center;">Request Early-Bird Access</h3>
+            <span class="features-badge">✨ lifetime for 5€ • limited time offer ✨</span>
+        </header>
+            
+        <form action="https://formspree.io/f/xpqgprol" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="email">Your Email Address</label>
+                <input type="email" id="email" name="email" placeholder="name@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="plant-types">What plants do you want to track?</label>
+                <textarea id="plant-types" name="plant-types" rows="3" placeholder="e.g., Monstera Deliciosa, Thai Constellation" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="name-generation">Do you want names generated (you can always edit on the app later)?</label>
+                <textarea id="name-generation" name="name-generation" rows="3" placeholder="e.g., Yes / No: Monty - Monstera Deliciosa, Stella - Thai Constellation" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Upload Photos of Your Plants (Optional)</label>
+                <div class="file-upload-wrapper" onclick="document.getElementById('photos').click()">
+                    <span style="color: var(--accent-terracotta); font-weight: 600;">Click to upload images</span>
+                    <input type="file" id="photos" name="photos" multiple style="display: none;">
+            </div>
+
+            <div class="form-group">
+                <label for="special-requests">Add any special requests here (additional fees may apply)</label>
+                <textarea id="special-requests" name="special-requests" rows="3" placeholder="e.g., Custom features, custom layout edits, etc." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary">Submit Verification Request</button>
+        </form>
+    </div>
+
+
+    <div id="hidden-billing-view" class="container" style="display: none;">
+        <header>
+            <h1>my garden</h1>
+            <p class="subtitle">Your Custom Collection Layout is Approved & Ready!</p>
+        </header>
+
+        <div class="invoice-box">
+            <div class="invoice-row">
+                <span>Access Plan:</span>
+                <strong>Early-Bird Lifetime Access</strong>
+            </div>
+            <div class="invoice-row">
+                <span>Setup Status:</span>
+                <strong>Custom Dashboard Configured</strong>
+            </div>
+            <div class="invoice-row invoice-total">
+                <span>Total Due:</span>
+                <span>€5.00</span>
+            </div>
+        </div>
+
+        <h3 style="margin-bottom: 16px;">Choose Your Payment Method</h3>
+
+        <div class="payment-option">
+            <h4 style="color: #003087;">PayPal (Friends & Family)</h4>
+            <p style="font-size: 0.9rem; margin-top: 8px;">
+                Scan code or send <strong>€5.00</strong> to <strong>your-email@example.com</strong>.
+            </p>
+            
+            <div class="qr-placeholder">
+                [ PayPal QR Code ]
+            </div>
+
+            <div class="alert-box">
+                ⚠️ <strong>Important:</strong> Please use the <strong>"Friends and Family"</strong> transfer option and put your email address in the notes so your link activates instantly.
+            </div>
+        </div>
+
+        <div class="payment-option">
+            <h4>Direct Bank Transfer (IBAN)</h4>
+            <div style="font-size: 0.9rem; margin-top: 10px; line-height: 1.6;">
+                <div class="invoice-row"><span>Account Holder:</span> <strong>Chelsea Lueth</strong></div>
+                <div class="invoice-row"><span>IBAN:</span> <strong>DE12 7004 0041 0262 5978 00</strong></div>
+                <div class="invoice-row"><span>Reference:</span> <strong>Plant Web App Access</strong></div>
+            </div>
+        </div>
+
+        <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 24px;">
+            Once payment is processed, your private home screen app link will land in your inbox within 24-48 hours. 
+            To create an app on your home screen for iPhones, click the 3 dots on the bottom right of the screen -> Share -> Add to Home Screen
+        </p>
+    </div>
+
+    <script>
+        // Check the URL parameters when the page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const view = urlParams.get('view');
+
+            if (view === 'billing') {
+                // Hide marketing, show invoice
+                document.getElementById('public-marketing-view').style.display = 'none';
+                document.getElementById('hidden-billing-view').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
