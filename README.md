@@ -1,1 +1,1 @@
-# chelseas-claude
+# my-garden
